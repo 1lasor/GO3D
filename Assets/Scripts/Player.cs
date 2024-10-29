@@ -19,25 +19,21 @@ public class Player : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit)&& hit.collider.TryGetComponent<BoardUnit>(out var boardUnit))
             {
-                // 处理射线击中的对象
-                ProcessHit(hit);
-            }
-        }
-    }
+                Vector3Int position = boardUnit.Position;
+                // 检查是否同时按下了Control键
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))//Ctrl+左键显示平面
+                {
+                    ShowPlaneAt(position);
+                }
+                else//左键单击落子
+                {
+                    PlacePiece(position);
+                }
 
-    void ProcessHit(RaycastHit hit)
-    {
-        if (hit.collider.TryGetComponent<BoardUnit>(out var boardUnit))
-        {
-            Vector3Int position = boardUnit.Position;
-            // 显示对应的平面
-            //Board3DController board = boardController.GetComponent<Board3DController>();
-            //ShowPlaneAt(board.centerPosition);
-            Debug.Log("focused cell: "+position.ToString());
-        } 
+            }     
+        }
     }
 
     void ShowPlaneAt(Vector3 position)
@@ -56,5 +52,11 @@ public class Player : MonoBehaviour
 
         // 这里可以添加代码来隐藏或显示其他平面
     }
+
+    void PlacePiece(Vector3Int position)
+    {
+        Debug.Log("focused cell: " + position.ToString());
+    }
+
 
 }
