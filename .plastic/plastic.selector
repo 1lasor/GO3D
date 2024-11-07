@@ -1,0 +1,4 @@
+repository "3DGO@elasor@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
